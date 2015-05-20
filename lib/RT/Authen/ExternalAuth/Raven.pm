@@ -29,7 +29,7 @@ sub CanonicalizeUserInfo {
     my $config = RT->Config->Get('ExternalSettings')->{$service};
 
     while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
-        $params{$key} = $ENV{$value} if $ENV{$value};
+        $params{$key} = $ENV{$value} if $value;
         $RT::Logger->debug( "Setting $key to the value of $value: $ENV{$value}");
     }
 
