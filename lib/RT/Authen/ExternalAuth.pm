@@ -771,7 +771,6 @@ sub UserDisabled {
             $user_disabled = RT::Authen::ExternalAuth::LDAP::UserDisabled($username,$service);
         } elsif ($config->{'type'} eq 'raven') {
             $user_disabled = RT::Authen::ExternalAuth::Raven::UserDisabled($username,$service);
-            }
         }
 
     }
