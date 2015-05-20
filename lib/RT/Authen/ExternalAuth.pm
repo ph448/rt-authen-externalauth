@@ -695,6 +695,9 @@ sub GetAuth {
     } elsif ($config->{'type'} eq 'ldap') {
         $success = RT::Authen::ExternalAuth::LDAP::GetAuth($service,$username,$password);
         $RT::Logger->debug("LDAP password validation result:",$success);
+    } elsif ($config->{'type'} eq 'raven') {
+        $success = RT::Authen::ExternalAuth::Raven::GetAuth($service,$username,$password);
+        $RT::Logger->debug("Raven password validation result:",$success);
     }
 
     return $success;
@@ -718,6 +721,8 @@ sub UserExists {
         $success = RT::Authen::ExternalAuth::DBI::UserExists($username,$service);
     } elsif ($config->{'type'} eq 'ldap') {
         $success = RT::Authen::ExternalAuth::LDAP::UserExists($username,$service);
+    } elsif ($config->{'type'} eq 'raven') {
+        $success = RT::Authen::ExternalAuth::Raven::UserExists($username,$service);
     }
 
     return $success;
@@ -764,7 +769,9 @@ sub UserDisabled {
                 next;
             }
             $user_disabled = RT::Authen::ExternalAuth::LDAP::UserDisabled($username,$service);
-
+        } elsif ($config->{'type'} eq 'raven') {
+            $user_disabled = RT::Authen::ExternalAuth::Raven::UserDisabled($username,$service);
+            }
         }
 
     }
@@ -845,6 +852,8 @@ sub CanonicalizeUserInfo {
                 ($found, %params) = RT::Authen::ExternalAuth::LDAP::CanonicalizeUserInfo($service,$key,$value);
             } elsif ($config->{'type'} eq 'db') {
                 ($found, %params) = RT::Authen::ExternalAuth::DBI::CanonicalizeUserInfo($service,$key,$value);
+            } elsif ($config->{'type'} eq 'raven') {
+                ($found, %params) = RT::Authen::ExternalAuth::Raven::CanonicalizeUserInfo($service,$key,$value);
             }
 
             # Don't Check any more attributes

@@ -11,7 +11,7 @@ sub GetAuth {
 
     # authenticate user and return 0 if auth failed
 
-    return 1;
+    return 1 if $ENV{'REMOTE_USER'};
 
 }
 
@@ -37,12 +37,8 @@ sub CanonicalizeUserInfo {
 
 sub UserExists {
     my ($username,$service) = @_;
-   $RT::Logger->debug("UserExists params:\nusername: $username , service: $service");
-    my $config              = RT->Config->Get('ExternalSettings')->{$service};
+    $RT::Logger->debug("UserExists will always succeed for $service, username: $username");
 
-    my @attrs = values(%{$config->{'attr_map'}});
-
-    # If we havent returned now, there must be a valid user.
     return 1;
 }
 
@@ -50,26 +46,9 @@ sub UserDisabled {
 
     my ($username,$service) = @_;
 
-    # FIRST, check that the user exists in the LDAP service
-    unless(UserExists($username,$service)) {
-        $RT::Logger->debug("User (",$username,") doesn't exist! - Assuming not disabled for the purposes of disable checking");
-        return 0;
-    }
+    $RT::Logger->debug("Service $service does not check for disabled users, username: $username");
 
-    my $config          = RT->Config->Get('ExternalSettings')->{$service};
-
-    if (defined($config->{'attr_map'}->{'Name'})) {
-        # Construct the complex filter
-    } else {
-        $RT::Logger->debug("You haven't specified an LDAP attribute to match the RT \"Name\" attribute for this service (",
-                            $service,
-                            "), so it's impossible look up the disabled status of this user (",
-                            $username,
-                            ") so I'm just going to assume the user is not disabled");
-        return 0;
-
-    }
-
+    return 0;
 }
 
 1;
