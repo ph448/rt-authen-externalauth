@@ -435,7 +435,7 @@ sub DoAuth {
         if ($config->{'type'} eq 'cookie') {
             # Currently, Cookie authentication is our only SSO method
             $username = RT::Authen::ExternalAuth::DBI::GetCookieAuth($config);
-        } elsif ($config->{'type'} eq 'Raven')
+        } elsif ($config->{'type'} eq 'Raven') {
             $username = $ENV{'REMOTE_USER'};
         }
         #############################################################
