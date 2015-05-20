@@ -437,6 +437,7 @@ sub DoAuth {
             $username = RT::Authen::ExternalAuth::DBI::GetCookieAuth($config);
         } elsif ($config->{'type'} eq 'Raven') {
             $username = $ENV{'REMOTE_USER'};
+            $RT::Logger->debug( "Using REMOTE_USER value \"$username\"");
         }
         #############################################################
 
