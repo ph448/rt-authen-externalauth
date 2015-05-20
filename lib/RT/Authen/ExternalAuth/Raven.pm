@@ -28,9 +28,9 @@ sub CanonicalizeUserInfo {
     # Load the config
     my $config = RT->Config->Get('ExternalSettings')->{$service};
 
-    # Get the list of unique attrs we need
-    my @attrs = values(%{$config->{'attr_map'}});
-
+    while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
+        $params{$key} = $ENV{$value} if $ENV{$value};
+    }
 
     return ($found, %params);
 }
