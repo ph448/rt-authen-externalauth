@@ -40,7 +40,7 @@ sub UserExists {
     my ($username,$service) = @_;
     $RT::Logger->debug("$service checking if username $username exists");
 
-    return 1 if $username == $ENV{'REMOTE_USER'} ;
+    return 1 if $username eq $ENV{'REMOTE_USER'} ;
 }
 
 sub UserDisabled {
@@ -49,7 +49,7 @@ sub UserDisabled {
 
     $RT::Logger->debug("$service checking if user $username is enabled");
 
-    return 0 if $username == $ENV{'REMOTE_USER'} ;
+    return 0 if $username eq $ENV{'REMOTE_USER'} ;
 }
 
 1;
