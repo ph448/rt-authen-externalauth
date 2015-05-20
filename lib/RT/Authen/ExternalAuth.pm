@@ -290,6 +290,7 @@ This is free software, licensed under:
 =cut
 
 use RT::Authen::ExternalAuth::LDAP;
+use RT::Authen::ExternalAuth::Raven;
 use RT::Authen::ExternalAuth::DBI;
 
 use strict;
@@ -326,7 +327,7 @@ $RT::Config::META{ExternalSettings} = {
         for my $service (keys %$settings) {
             my %conf = %{ $settings->{$service} };
 
-            if ($conf{type} !~ /^(ldap|db|cookie)$/) {
+            if ($conf{type} !~ /^(ldap|db|cookie|raven)$/) {
                 $RT::Logger->error(
                     "Service '$service' in ExternalInfoPriority is not ldap, db, or cookie; removing."
                 );
