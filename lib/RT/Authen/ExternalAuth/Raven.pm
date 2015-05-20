@@ -20,7 +20,7 @@ sub CanonicalizeUserInfo {
 
     my ($service, $key, $value) = @_;
 
-    my $found = 1;
+    my $found = 0;
     my %params = (Name         => undef,
                   EmailAddress => undef,
                   RealName     => undef);
@@ -38,18 +38,18 @@ sub CanonicalizeUserInfo {
 
 sub UserExists {
     my ($username,$service) = @_;
-    $RT::Logger->debug("UserExists will always succeed for $service, username: $username");
+    $RT::Logger->debug("$service checking if username $username exists");
 
-    return 1;
+    return 1 if $username == $ENV{'REMOTE_USER'} ;
 }
 
 sub UserDisabled {
 
     my ($username,$service) = @_;
 
-    $RT::Logger->debug("Service $service does not check for disabled users, username: $username");
+    $RT::Logger->debug("$service checking if user $username is enabled");
 
-    return 0;
+    return 0 if $username == $ENV{'REMOTE_USER'} ;
 }
 
 1;
