@@ -9,10 +9,6 @@ sub GetAuth {
     my $config = RT->Config->Get('ExternalSettings')->{$service};
     $RT::Logger->debug( "Trying external auth service:",$service);
 
-    # Make sure we fetch the user attribute we'll need for the group check
-    push @attrs, $group_attr_val
-        unless lc $group_attr_val eq 'dn';
-
     # authenticate user and return 0 if auth failed
 
     return 1;
