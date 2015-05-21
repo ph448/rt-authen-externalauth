@@ -30,7 +30,7 @@ sub CanonicalizeUserInfo {
 
 
     while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
-        $found = 1 if $ENV[$value];
+        $found = 1 if exists($ENV{$value});
         $params{$key} = $ENV{$value};
         $RT::Logger->debug( "Setting $key to the value of $value: $ENV{$value}");
     }
