@@ -11,7 +11,7 @@ sub GetAuth {
 
     # authenticate user and return 0 if auth failed
 
-    return 1 if $ENV{'REMOTE_USER'};
+    return 1 if $ENV{'eppn'};
 
 }
 
@@ -20,13 +20,15 @@ sub CanonicalizeUserInfo {
 
     my ($service, $key, $value) = @_;
 
-    my $found = 1;
+    my $found = 0;
     my %params = (Name         => undef,
                   EmailAddress => undef,
                   RealName     => undef);
 
     # Load the config
     my $config = RT->Config->Get('ExternalSettings')->{$service};
+
+    $found = 1 if $ENV['eppn']
 
     while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
         $params{$key} = $ENV{$value};
@@ -40,7 +42,7 @@ sub UserExists {
     my ($username,$service) = @_;
     $RT::Logger->debug("$service checking if username $username exists");
 
-    return 1 if $username eq $ENV{'REMOTE_USER'} ;
+    return 1 if $username eq $ENV{'eppn'} ;
 }
 
 sub UserDisabled {
@@ -49,7 +51,7 @@ sub UserDisabled {
 
     $RT::Logger->debug("$service checking if user $username is enabled");
 
-    return 0 if $username eq $ENV{'REMOTE_USER'} ;
+    return 0 if $username eq $ENV{'eppn'} ;
 }
 
 1;
