@@ -28,9 +28,8 @@ sub CanonicalizeUserInfo {
     # Load the config
     my $config = RT->Config->Get('ExternalSettings')->{$service};
 
-
     while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
-        $found = 1 if exists($ENV{$value});
+        $found = 1 if $ENV{$value} eq $ENV{'REMOTE_USER'};
         $params{$key} = $ENV{$value};
         $RT::Logger->debug( "Setting $key to the value of $value: $ENV{$value}");
     }
