@@ -28,9 +28,9 @@ sub CanonicalizeUserInfo {
     # Load the config
     my $config = RT->Config->Get('ExternalSettings')->{$service};
 
-    $found = 1 if $ENV['eppn'];
 
     while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
+        $found = 1 if $ENV[$value];
         $params{$key} = $ENV{$value};
         $RT::Logger->debug( "Setting $key to the value of $value: $ENV{$value}");
     }
