@@ -20,7 +20,7 @@ sub CanonicalizeUserInfo {
 
     my ($service, $key, $value) = @_;
 
-    my $found = 0;
+    my $found = 1;
     my %params = (Name         => undef,
                   EmailAddress => undef,
                   RealName     => undef);
