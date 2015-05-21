@@ -28,7 +28,7 @@ sub CanonicalizeUserInfo {
     # Load the config
     my $config = RT->Config->Get('ExternalSettings')->{$service};
 
-    $found = 1 if $ENV['eppn']
+    $found = 1 if $ENV['eppn'];
 
     while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
         $params{$key} = $ENV{$value};
