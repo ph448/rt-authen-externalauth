@@ -31,7 +31,9 @@ sub CanonicalizeUserInfo {
     my $config = RT->Config->Get('ExternalSettings')->{$service};
 
     if (!exists($ENV{$key}) && !exists($ENV{'REMOTE_USER'})) {
-        $RT::Logger->debug( "$ENV{$key}; $ENV{'REMOTE_USER'}");
+        $RT::Logger->debug( "We do not have Raven info, pass user back");
+        $params{'Name'} = $value;
+        $params{'EmailAddress'} = $value;
         return ($found,%params);
     }
 
