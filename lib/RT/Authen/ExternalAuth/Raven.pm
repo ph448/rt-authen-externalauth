@@ -22,7 +22,7 @@ sub CanonicalizeUserInfo {
 
     $RT::Logger->debug( "$service, $key, $value" );
 
-    my $found = 0;
+    my $found = 1;
     my %params = (Name         => undef,
                   EmailAddress => undef,
                   RealName     => undef);
@@ -30,8 +30,12 @@ sub CanonicalizeUserInfo {
     # Load the config
     my $config = RT->Config->Get('ExternalSettings')->{$service};
 
+    if (!exists($ENV{$key}) && !exists($ENV{'REMOTE_USER'})) {
+        $RT::Logger->debug( "$ENV{$key}; $ENV{'REMOTE_USER'}");
+        return ($found,%params);
+    }
+
     while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
-        $found = 1 if $ENV{$value} eq $ENV{'REMOTE_USER'};
         $params{$key} = $ENV{$value};
         $RT::Logger->debug( "Setting $key to the value of $value: $ENV{$value}");
     }
