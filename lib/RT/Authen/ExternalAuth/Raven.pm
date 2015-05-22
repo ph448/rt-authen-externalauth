@@ -20,6 +20,8 @@ sub CanonicalizeUserInfo {
 
     my ($service, $key, $value) = @_;
 
+    $RT::Logger->debug( "@_" );
+
     my $found = 0;
     my %params = (Name         => undef,
                   EmailAddress => undef,
