@@ -22,7 +22,7 @@ sub CanonicalizeUserInfo {
 
     $RT::Logger->debug( "$service, $key, $value" );
 
-    my $found = 1;
+    my $found = 0;
     my %params = (Name         => undef,
                   EmailAddress => undef,
                   RealName     => undef);
@@ -36,7 +36,7 @@ sub CanonicalizeUserInfo {
         $params{'EmailAddress'} = $value;
         return ($found,%params);
     }
-
+    $found = 1;
     while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
         $params{$key} = $ENV{$value};
         $RT::Logger->debug( "Setting $key to the value of $value: $ENV{$value}");
