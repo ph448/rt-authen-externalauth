@@ -19,7 +19,7 @@ sub CanonicalizeUserInfo {
 
     $RT::Logger->debug( "$service;$key;$value, @_");
 
-    if (!exists($ENV{$key})) {
+    if (!exists($ENV{$key}) || $ENV{$key} ne $username) {
         # if the key does not exist, we don't have a Raven session,
         # so we need to reflect the parameter for user creation
         $RT::Logger->debug( "We do not have Raven info, pass user back");
