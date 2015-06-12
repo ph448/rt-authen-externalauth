@@ -21,8 +21,8 @@ sub CanonicalizeUserInfo {
 
     if (!exists($ENV{$key}) || $ENV{$key} ne $value) {
         # if the key does not exist, we don't have a Raven session,
-        # so we need to reflect the parameter for user creation
-        # if the value does not equal the eppn, we're creating an user
+        # so we need to reflect the parameter back for user creation
+        # if the value does not equal the eppn, we're creating a new user
         $RT::Logger->debug( "We do not have Raven info, pass user back");
         $params{'Name'} = $value;
         $params{'EmailAddress'} = $value;
@@ -30,6 +30,7 @@ sub CanonicalizeUserInfo {
         $found = 1;
         # Load the config
         my $config = RT->Config->Get('ExternalSettings')->{$service};
+        # iterate over the attribute map and get details
         while ( ($key, $value) = each %{$config->{'attr_map'}} ) {
             $params{$key} = $ENV{$value};
             $RT::Logger->debug( "Setting $key to the value of $value: $ENV{$value}");
@@ -41,7 +42,7 @@ sub CanonicalizeUserInfo {
 sub UserExists {
     my ($username,$service) = @_;
     $RT::Logger->debug("$service checking if username $username exists");
-    # rppn set means we have a Raven session, return true
+    # eppn set means we have a Raven session, return true
     return 1 if $username eq $ENV{'eppn'};
     return 0;
 }
@@ -49,7 +50,7 @@ sub UserExists {
 sub UserDisabled {
     my ($username,$service) = @_;
     $RT::Logger->debug("$service checking if user $username is enabled");
-    # rppn set means we have a Raven session, return false
+    # eppn set means we have a Raven session, return false
     return 0 if $username eq $ENV{'eppn'};
     return 1;
 }
